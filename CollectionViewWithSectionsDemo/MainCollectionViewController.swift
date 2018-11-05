@@ -4,9 +4,10 @@ import CoreData
 
 class MainCollectionViewController: UICollectionViewController, UIGestureRecognizerDelegate {
 
-    private var counter = 0
     private var indx: IndexPath?
     private var items: [Item] = []
+    //1
+    private var items2: [[Item]] = [[]]
     private var blockOperations: [BlockOperation] = []
     private var fetchResultsController: NSFetchedResultsController<Item>!
     
@@ -36,9 +37,8 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
                 print(error.localizedDescription)
             }
         }
-        
-        counter = items.count
-        print("counter in viewDidLoad is \(counter)")
+        //2
+        items2 = items.chunked(into: 5)
     }
     
     @IBAction func unwindSegue(segue: UIStoryboardSegue) {}
@@ -103,29 +103,14 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         print("call numberOfSections")
-        
-        if items.count % 5 == 0 {
-            return items.count / 5
-        }
-        
-        return items.count / 5 + 1
+        //3
+        return items2.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //приведенный ниже алгоритм служит для выдачи корректного количества предметов в секции
         print("вызываем numberOfItemsInSection текущ секц равна \(section)")
-        counter -= 5
-        
-        print("result is \(counter)")
-        
-        if counter > 0 || counter == 0 {
-            print("numberOfItemsInSection is (if) \(counter)")
-            return 5
-        //если меньше нуля, то в последней секции количество предметов будет равным остатку от деления общего количества предметов на 5 (результат всегда будет меньше 5, таким образом возможно отобразить количество предметов в одной секции равным 4,3,2,1
-        } else {
-            print("numberOfItemsInSection is (else) \(items.count % 5)")
-            return items.count % 5
-        }
+        //4
+        return items2[section].count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -157,6 +142,8 @@ extension MainCollectionViewController: NSFetchedResultsControllerDelegate {
             //выдает корректное положение предмета. Например [1,1]
             print("self.indx! \(self.indx!)")
             op = BlockOperation { (self.collectionView?.deleteItems(at: [self.indx!])) }
+            //выдает НЕкорректное положение предмета!
+            print("indexPath is \(indexPath)")
         case .update:
             guard let indexPath = indexPath else { return }
             op = BlockOperation { (self.collectionView?.reloadItems(at: [indexPath])) }
@@ -167,15 +154,15 @@ extension MainCollectionViewController: NSFetchedResultsControllerDelegate {
 
         blockOperations.append(op)
         items = controller.fetchedObjects as! [Item]
-        counter = items.count
-        print("----------counter is: \(counter)----------")
+        //5
+        items2 = items.chunked(into: 5)
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView?.performBatchUpdates({ [weak self] in
             guard let self = self else { return }
             self.blockOperations.forEach { $0.start() }
-
+            //черновой вариант
             if items.count == 5 {
                 self.collectionView.deleteSections(IndexSet(integer: 1))
             }
@@ -184,10 +171,18 @@ extension MainCollectionViewController: NSFetchedResultsControllerDelegate {
                 self.collectionView.deleteSections(IndexSet(integer: 0))
             }
             
-            print("Запустили self.blockOperations.forEach { $0.start() }")
+            print("Запустили self.blockOperations.forEach { $0.start() }, он выполнился")
         }, completion: { (finished) in
             self.blockOperations.removeAll(keepingCapacity: false)
-            print("Запустили self.blockOperations.removeAll(keepingCapacity: false)")
+            print("Запустили self.blockOperations.removeAll(keepingCapacity: false), он выполнился")
         })
+    }
+}
+
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
+        }
     }
 }
