@@ -4,6 +4,18 @@
 <array>
 	<dict>
 		<key>name</key>
+		<string>Спаржа</string>
+		<key>image</key>
+		<string>asparagus.png</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Чеснок</string>
+		<key>image</key>
+		<string>garlic.png</string>
+	</dict>
+	<dict>
+		<key>name</key>
 		<string>Редис</string>
 		<key>image</key>
 		<string>radish.png</string>

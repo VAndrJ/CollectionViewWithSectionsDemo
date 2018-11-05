@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GjU-Nc-Ry4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GjU-Nc-Ry4">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -73,11 +74,75 @@
                             <outlet property="delegate" destination="Gic-DJ-Q7R" id="rOZ-6A-XyR"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Главный экран" id="uQn-Gw-tA5"/>
+                    <navigationItem key="navigationItem" title="Главный экран" id="uQn-Gw-tA5">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="0yf-Fl-zGz">
+                            <connections>
+                                <action selector="addNewItemButtonPressed:" destination="Gic-DJ-Q7R" id="EYp-Cu-V9a"/>
+                                <segue destination="eX9-Yp-Yj2" kind="show" identifier="addNewItemSegue" id="Cs7-In-THy"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Koq-nV-Dyb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1036" y="65.217391304347828"/>
+        </scene>
+        <!--New Item View Controller-->
+        <scene sceneID="8cg-R7-e4H">
+            <objects>
+                <viewController id="eX9-Yp-Yj2" customClass="NewItemViewController" customModule="CollectionViewWithSectionsDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="q6E-gP-6aV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="fxP-8C-p9I">
+                                <rect key="frame" x="137.5" y="262.5" width="100" height="206"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gIP-Y4-DHs">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="in1-NE-ahg"/>
+                                            <constraint firstAttribute="width" constant="100" id="rii-EL-Zip"/>
+                                        </constraints>
+                                    </imageView>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fsk-Ei-XhU">
+                                        <rect key="frame" x="0.0" y="123" width="100" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hvQ-Uj-icy">
+                                        <rect key="frame" x="0.0" y="176" width="100" height="30"/>
+                                        <color key="backgroundColor" red="0.57919406890000003" green="0.1280144453" blue="0.57268613580000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Button">
+                                            <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="saveButtonPressed:" destination="eX9-Yp-Yj2" eventType="touchUpInside" id="BNz-ll-seI"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="fxP-8C-p9I" firstAttribute="centerX" secondItem="7Hp-E3-4qp" secondAttribute="centerX" id="6Lk-SA-Uv2"/>
+                            <constraint firstItem="fxP-8C-p9I" firstAttribute="centerY" secondItem="7Hp-E3-4qp" secondAttribute="centerY" id="wa7-WP-c6U"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7Hp-E3-4qp"/>
+                    </view>
+                    <connections>
+                        <outlet property="img" destination="gIP-Y4-DHs" id="Gt5-oW-eOu"/>
+                        <outlet property="textField" destination="fsk-Ei-XhU" id="i2D-pE-fkk"/>
+                        <segue destination="fD4-BZ-DqC" kind="unwind" identifier="unwindSegue" unwindAction="unwindSegueWithSegue:" id="r0r-g7-Lby"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OgM-zi-tdF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="fD4-BZ-DqC" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1964" y="64.31784107946028"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3SG-wV-1bm">

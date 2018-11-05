@@ -38,6 +38,12 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
         }
         
         counter = items.count
+        print("counter in viewDidLoad is \(counter)")
+    }
+    
+    @IBAction func unwindSegue(segue: UIStoryboardSegue) {}
+    
+    @IBAction func addNewItemButtonPressed(_ sender: UIBarButtonItem) {
     }
     
     @objc func handleLongPress(gesture: UILongPressGestureRecognizer!) {
@@ -59,6 +65,7 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
                     let selectedItem = try context.fetch(fetchRequest)[0]
                     //сохраняем корректное положение предмета в переменную indx, чтобы использовать в performBatchUpdates (в функции didChange anObject: Any)
                     indx = IndexPath(row: indexPath.row, section: indexPath.section)
+                    print("indx.section \(indx!.section)")
                     context.delete(selectedItem)
                     
                     do {
@@ -96,26 +103,27 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         print("call numberOfSections")
-        if items.count > 10 {
-            return 3
-        } else if items.count > 5 {
-            return 2
-        } else {
-            return 1
+        
+        if items.count % 5 == 0 {
+            return items.count / 5
         }
+        
+        return items.count / 5 + 1
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //приведенный ниже алгоритм служит для выдачи корректного количества предметов в секции
-        var result = 0
-
-        counter = counter - 5
-        result = counter
-        //если ещё не отображенный в коллекции предметов больше нуля, то в одной секции у нас будет 5 предметов
-        if result > 0 || result == 0 {
+        print("вызываем numberOfItemsInSection текущ секц равна \(section)")
+        counter -= 5
+        
+        print("result is \(counter)")
+        
+        if counter > 0 || counter == 0 {
+            print("numberOfItemsInSection is (if) \(counter)")
             return 5
         //если меньше нуля, то в последней секции количество предметов будет равным остатку от деления общего количества предметов на 5 (результат всегда будет меньше 5, таким образом возможно отобразить количество предметов в одной секции равным 4,3,2,1
         } else {
+            print("numberOfItemsInSection is (else) \(items.count % 5)")
             return items.count % 5
         }
     }
@@ -124,10 +132,6 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
         let item = items[indexPath.section * 5 + indexPath.row]
-        //в этом блоке принтов выдается корректное положение предмета
-        print("items[indexPath.row] is \(indexPath.row)")
-        print("items[indexPath.section] is \(indexPath.section)")
-        print("items[indexPath.section * 5 + indexPath.row] is \(items[indexPath.section * 5 + indexPath.row].name!)")
         
         cell.itemNameTextLabel.text = item.name
         cell.itemImageView.image = UIImage(data: item.image! as Data)
@@ -146,13 +150,12 @@ extension MainCollectionViewController: NSFetchedResultsControllerDelegate {
         
         switch type {
         case .insert:
-            op = BlockOperation { (self.collectionView?.insertItems(at: [newIndexPath!])) }
+            guard let newIndexPath = newIndexPath else { return }
+            op = BlockOperation { (self.collectionView?.insertItems(at: [newIndexPath])) }
         case .delete:
             guard let indexPath = indexPath else { return }
             //выдает корректное положение предмета. Например [1,1]
             print("self.indx! \(self.indx!)")
-            //выдает НЕкорректное положение предмета, если количество секций больше 1 штуки! Например выдает [0,6], тогда как должен выдавать [1,1]
-            print("indexPath \(indexPath)")
             op = BlockOperation { (self.collectionView?.deleteItems(at: [self.indx!])) }
         case .update:
             guard let indexPath = indexPath else { return }
@@ -161,14 +164,26 @@ extension MainCollectionViewController: NSFetchedResultsControllerDelegate {
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
             op = BlockOperation { (self.collectionView?.moveItem(at: indexPath, to: newIndexPath)) }
         }
-        
+
         blockOperations.append(op)
         items = controller.fetchedObjects as! [Item]
+        counter = items.count
+        print("----------counter is: \(counter)----------")
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        collectionView?.performBatchUpdates({
+        collectionView?.performBatchUpdates({ [weak self] in
+            guard let self = self else { return }
             self.blockOperations.forEach { $0.start() }
+
+            if items.count == 5 {
+                self.collectionView.deleteSections(IndexSet(integer: 1))
+            }
+            
+            if items.count == 0 {
+                self.collectionView.deleteSections(IndexSet(integer: 0))
+            }
+            
             print("Запустили self.blockOperations.forEach { $0.start() }")
         }, completion: { (finished) in
             self.blockOperations.removeAll(keepingCapacity: false)

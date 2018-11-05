@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B86F9A721903EFC00088360 /* NewItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B86F9A621903EFC00088360 /* NewItemViewController.swift */; };
 		2B8DDEC1218C1C650078AA67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8DDEC0218C1C650078AA67 /* AppDelegate.swift */; };
 		2B8DDEC6218C1C650078AA67 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B8DDEC4218C1C650078AA67 /* Main.storyboard */; };
 		2B8DDEC9218C1C650078AA67 /* CollectionViewWithSectionsDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B8DDEC7218C1C650078AA67 /* CollectionViewWithSectionsDemo.xcdatamodeld */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B86F9A621903EFC00088360 /* NewItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemViewController.swift; sourceTree = "<group>"; };
 		2B8DDEBD218C1C650078AA67 /* CollectionViewWithSectionsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollectionViewWithSectionsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8DDEC0218C1C650078AA67 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B8DDEC5218C1C650078AA67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 			children = (
 				2B8DDEDD218C20EC0078AA67 /* Models */,
 				2B8DDED5218C1CAB0078AA67 /* MainCollectionViewController.swift */,
+				2B86F9A621903EFC00088360 /* NewItemViewController.swift */,
 				2B8DDED7218C1D8E0078AA67 /* CollectionViewCell.swift */,
 				2B8DDEE0218C28650078AA67 /* CollectionReusableView.swift */,
 				2B8DDEC0218C1C650078AA67 /* AppDelegate.swift */,
@@ -168,6 +171,7 @@
 				2B8DDEC9218C1C650078AA67 /* CollectionViewWithSectionsDemo.xcdatamodeld in Sources */,
 				2B8DDED6218C1CAB0078AA67 /* MainCollectionViewController.swift in Sources */,
 				2B8DDED8218C1D8E0078AA67 /* CollectionViewCell.swift in Sources */,
+				2B86F9A721903EFC00088360 /* NewItemViewController.swift in Sources */,
 				2B8DDEC1218C1C650078AA67 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
