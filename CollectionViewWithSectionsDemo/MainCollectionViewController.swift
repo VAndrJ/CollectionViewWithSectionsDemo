@@ -4,11 +4,10 @@ import CoreData
 
 class MainCollectionViewController: UICollectionViewController, UIGestureRecognizerDelegate {
 
-    private var indx: IndexPath?
+    private var deletedItemIndex: IndexPath?
     private var items: [Item] = []
     //1
     private var items2: [[Item]] = [[]]
-    private var blockOperations: [BlockOperation] = []
     private var fetchResultsController: NSFetchedResultsController<Item>!
     
     override func viewDidLoad() {
@@ -46,6 +45,14 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
     @IBAction func addNewItemButtonPressed(_ sender: UIBarButtonItem) {
     }
     
+    //6
+    @IBAction func rexHuntButtonPressed(_ sender: UIBarButtonItem) {
+        items.remove(at: 4)
+        items2 = items.chunked(into: 5)
+        collectionView.reloadData()
+    }
+    
+    
     @objc func handleLongPress(gesture: UILongPressGestureRecognizer!) {
         if gesture.state != .ended {
             return
@@ -56,16 +63,14 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
         if let indexPath = self.collectionView?.indexPathForItem(at: p) {
             let fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
             //благодаря такому способу удаляется выбранный пользователем предмет
-            fetchRequest.predicate = NSPredicate(format: "name == %@", self.items[indexPath.section * 5 + indexPath.row].name!)
+            fetchRequest.predicate = NSPredicate(format: "name == %@", self.items2[indexPath.section][indexPath.row].name!)
             
-            print("self.items[indexPath.section * 5 + indexPath.row].name! is \(self.items[indexPath.section * 5 + indexPath.row].name!)")
-           
             do {
                 if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
                     let selectedItem = try context.fetch(fetchRequest)[0]
                     //сохраняем корректное положение предмета в переменную indx, чтобы использовать в performBatchUpdates (в функции didChange anObject: Any)
-                    indx = IndexPath(row: indexPath.row, section: indexPath.section)
-                    print("indx.section \(indx!.section)")
+                    deletedItemIndex = IndexPath(row: indexPath.row, section: indexPath.section)
+                    print("indx.section \(deletedItemIndex!.section)")
                     context.delete(selectedItem)
                     
                     do {
@@ -108,7 +113,7 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("вызываем numberOfItemsInSection текущ секц равна \(section)")
+        print("call numberOfItemsInSection, current section is \(section)")
         //4
         return items2[section].count
     }
@@ -116,7 +121,7 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
-        let item = items[indexPath.section * 5 + indexPath.row]
+        let item = items2[indexPath.section][indexPath.row]
         
         cell.itemNameTextLabel.text = item.name
         cell.itemImageView.image = UIImage(data: item.image! as Data)
@@ -126,55 +131,14 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
 }
 
 extension MainCollectionViewController: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        blockOperations.removeAll(keepingCapacity: true)
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        let op: BlockOperation!
-        
-        switch type {
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            op = BlockOperation { (self.collectionView?.insertItems(at: [newIndexPath])) }
-        case .delete:
-            guard let indexPath = indexPath else { return }
-            //выдает корректное положение предмета. Например [1,1]
-            print("self.indx! \(self.indx!)")
-            op = BlockOperation { (self.collectionView?.deleteItems(at: [self.indx!])) }
-            //выдает НЕкорректное положение предмета!
-            print("indexPath is \(indexPath)")
-        case .update:
-            guard let indexPath = indexPath else { return }
-            op = BlockOperation { (self.collectionView?.reloadItems(at: [indexPath])) }
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else { return }
-            op = BlockOperation { (self.collectionView?.moveItem(at: indexPath, to: newIndexPath)) }
-        }
-
-        blockOperations.append(op)
-        items = controller.fetchedObjects as! [Item]
-        //5
-        items2 = items.chunked(into: 5)
-    }
-    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         collectionView?.performBatchUpdates({ [weak self] in
             guard let self = self else { return }
-            self.blockOperations.forEach { $0.start() }
-            //черновой вариант
-            if items.count == 5 {
-                self.collectionView.deleteSections(IndexSet(integer: 1))
-            }
             
-            if items.count == 0 {
-                self.collectionView.deleteSections(IndexSet(integer: 0))
-            }
+            items = controller.fetchedObjects as! [Item]
+            items2 = items.chunked(into: 5)
             
-            print("Запустили self.blockOperations.forEach { $0.start() }, он выполнился")
-        }, completion: { (finished) in
-            self.blockOperations.removeAll(keepingCapacity: false)
-            print("Запустили self.blockOperations.removeAll(keepingCapacity: false), он выполнился")
+            self.collectionView?.deleteItems(at: [self.deletedItemIndex!])
         })
     }
 }

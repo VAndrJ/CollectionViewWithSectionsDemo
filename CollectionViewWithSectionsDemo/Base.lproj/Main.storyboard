@@ -75,6 +75,11 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Главный экран" id="uQn-Gw-tA5">
+                        <barButtonItem key="leftBarButtonItem" systemItem="save" id="VBw-Qn-EqX">
+                            <connections>
+                                <action selector="rexHuntButtonPressed:" destination="Gic-DJ-Q7R" id="v3v-xg-8wi"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="0yf-Fl-zGz">
                             <connections>
                                 <action selector="addNewItemButtonPressed:" destination="Gic-DJ-Q7R" id="EYp-Cu-V9a"/>
