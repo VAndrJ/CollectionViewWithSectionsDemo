@@ -1,6 +1,6 @@
 import UIKit
 import CoreData
-
+import Differ
 
 class MainCollectionViewController: UICollectionViewController, UIGestureRecognizerDelegate {
 
@@ -132,14 +132,10 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
 
 extension MainCollectionViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        collectionView?.performBatchUpdates({ [weak self] in
-            guard let self = self else { return }
-            
-            items = controller.fetchedObjects as! [Item]
-            items2 = items.chunked(into: 5)
-            
-            self.collectionView?.deleteItems(at: [self.deletedItemIndex!])
-        })
+        let oldData = items2
+        items = controller.fetchedObjects as! [Item]
+        items2 = items.chunked(into: 5)
+        self.collectionView?.animateItemAndSectionChanges(oldData: oldData, newData: items2)
     }
 }
 
