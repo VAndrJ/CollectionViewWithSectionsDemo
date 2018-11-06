@@ -7,7 +7,7 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
     private var deletedItemIndex: IndexPath?
     private var items: [Item] = []
     //1
-    private var items2: [[Item]] = [[]]
+    private var items2: [ItemsArray] = []
     private var fetchResultsController: NSFetchedResultsController<Item>!
     
     override func viewDidLoad() {
@@ -37,7 +37,7 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
             }
         }
         //2
-        items2 = items.chunked(into: 5)
+        items2 = ItemsArray.split(items: items)
     }
     
     @IBAction func unwindSegue(segue: UIStoryboardSegue) {}
@@ -48,7 +48,7 @@ class MainCollectionViewController: UICollectionViewController, UIGestureRecogni
     //6
     @IBAction func rexHuntButtonPressed(_ sender: UIBarButtonItem) {
         items.remove(at: 4)
-        items2 = items.chunked(into: 5)
+        //items2 = items.chunked(into: 5)
         collectionView.reloadData()
     }
     
@@ -134,8 +134,8 @@ extension MainCollectionViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         let oldData = items2
         items = controller.fetchedObjects as! [Item]
-        items2 = items.chunked(into: 5)
-        self.collectionView?.animateItemAndSectionChanges(oldData: oldData, newData: items2)
+        items2 = ItemsArray.split(items: items)
+        collectionView.animateItemAndSectionChanges(oldData: oldData, newData: items2)
     }
 }
 

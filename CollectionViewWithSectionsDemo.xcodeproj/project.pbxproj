@@ -19,6 +19,7 @@
 		2B8DDEDC218C20C80078AA67 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8DDEDA218C20C80078AA67 /* Item+CoreDataProperties.swift */; };
 		2B8DDEDF218C21230078AA67 /* Items.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B8DDEDE218C21230078AA67 /* Items.plist */; };
 		2B8DDEE1218C28650078AA67 /* CollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8DDEE0218C28650078AA67 /* CollectionReusableView.swift */; };
+		A3269B66219249CF00567C44 /* ItemsArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3269B65219249CF00567C44 /* ItemsArray.swift */; };
 		EFEF760E444FFA7496B62293 /* Pods_CollectionViewWithSectionsDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 502FC677A03610195FD39E00 /* Pods_CollectionViewWithSectionsDemo.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		2B8DDEE0218C28650078AA67 /* CollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionReusableView.swift; sourceTree = "<group>"; };
 		502FC677A03610195FD39E00 /* Pods_CollectionViewWithSectionsDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CollectionViewWithSectionsDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55BF817C67CDAEFB49903FC7 /* Pods-CollectionViewWithSectionsDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CollectionViewWithSectionsDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CollectionViewWithSectionsDemo/Pods-CollectionViewWithSectionsDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		A3269B65219249CF00567C44 /* ItemsArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsArray.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				2B8DDEDD218C20EC0078AA67 /* Models */,
+				A3269B65219249CF00567C44 /* ItemsArray.swift */,
 				2B8DDED5218C1CAB0078AA67 /* MainCollectionViewController.swift */,
 				2B86F9A621903EFC00088360 /* NewItemViewController.swift */,
 				2B8DDED7218C1D8E0078AA67 /* CollectionViewCell.swift */,
@@ -232,6 +235,7 @@
 			files = (
 				2B8DDEE1218C28650078AA67 /* CollectionReusableView.swift in Sources */,
 				2B8DDEDC218C20C80078AA67 /* Item+CoreDataProperties.swift in Sources */,
+				A3269B66219249CF00567C44 /* ItemsArray.swift in Sources */,
 				2B8DDEDB218C20C80078AA67 /* Item+CoreDataClass.swift in Sources */,
 				2B8DDEC9218C1C650078AA67 /* CollectionViewWithSectionsDemo.xcdatamodeld in Sources */,
 				2B8DDED6218C1CAB0078AA67 /* MainCollectionViewController.swift in Sources */,
