@@ -1,0 +1,16 @@
+PODS:
+  - Differ (1.3.0)
+
+DEPENDENCIES:
+  - Differ
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Differ
+
+SPEC CHECKSUMS:
+  Differ: 9fcee7602542d7c6484ce05a0faec1c11258ed63
+
+PODFILE CHECKSUM: f326b0de738a16a6bcefb1c59df7a5a9a54ea31f
+
+COCOAPODS: 1.5.3
